@@ -10,20 +10,28 @@ const Users:FC = () => {
             setUsers(users.filter(user => id !== user.id));
         }
     }
+    let [searchedUsers, setSearchedUsers] = useState(users);
+    const searchUser = (event:ChangeEvent<HTMLInputElement>) => {
+        if (event.target.value !== '') {
+            searchedUsers = users.slice(0);
+            setSearchedUsers(searchedUsers.filter(user => user.name.toLowerCase().includes(event.target.value.toLowerCase())));
+        } else {
+            setSearchedUsers(users);
+        }
+    }
     
     return (
         <>
         <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">Search</span>
             <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"
-            
-            >
-            </input>
+            onChange={(event) => searchUser(event)}
+            />
         </div>
         <div className="row row-cols-1 row-cols-md-3 g-4">
-            {users.length 
+            {searchedUsers.length 
             ?
-            users.map(user =>
+            searchedUsers.map(user =>
             <div className="col" key={user.id}>{/*ключ в верхнем теге*/}
                 <div className="card h-100">
                     <div className="card-body">
